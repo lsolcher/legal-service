@@ -1,40 +1,41 @@
-# Welcome to Remix!
+# Gesetzesanalyse-Projekt mit Remix
 
-- 📖 [Remix docs](https://remix.run/docs)
+🚧 **Work in Progress** 🚧  
+Dieses Projekt dient zur Verwaltung und Analyse von Gesetzestexten auf Grundlage der Prinzipien der digitalen Regelungsgestaltung. Mit der OpenAI API werden Gesetze analysiert, um ihre Tauglichkeit für die digitale Anwendung zu bewerten.
 
-## Development
+## Zweck
 
-Run the dev server:
+Die Anwendung ermöglicht:
+- **Speicherung** von Gesetzen in einer MongoDB-Datenbank.
+- **Analyse** eines ausgewählten Gesetzes basierend auf Prinzipien wie Barrierefreiheit, Datenwiederverwendung und Automatisierbarkeit.
+- **Präsentation** der Analyse direkt in der Benutzeroberfläche, um gut gestaltete und verbesserungswürdige Bereiche des Gesetzestextes aufzuzeigen.
 
-```shellscript
-npm run dev
-```
+## Installation
 
-## Deployment
+1. **Repository klonen**
+   ```shell
+   git clone <repository-url>
+   cd <project-directory>
 
-First, build your app for production:
+2. **Repository klonen**
+Erstelle eine .env-Datei und füge die Datenbank-URL und den OpenAI-API-Schlüssel hinzu:
+   ```shell
+    DATABASE_URL="your-mongodb-url"
+    OPENAI_API_KEY="your-openai-api-key"
 
-```sh
-npm run build
-```
+3. **Abhängigkeiten installieren und Prisma konfigurieren**
+    ```shell
+    npm install
+    npx prisma generate
+4.  **Entwicklungsserver starten**
+    ```shell
+    npm run dev
 
-Then run the app in production mode:
+## Nutzung
 
-```sh
-npm start
-```
+- **Gesetz hinzufügen**: Über die Oberfläche können neue Gesetze hinzugefügt und in der Datenbank gespeichert werden.
+- **Analyse durchführen**: Wählen Sie ein Gesetz aus und klicken Sie auf "Analysieren", um die Bewertung basierend auf digitaltauglichen Prinzipien anzuzeigen.
 
-Now you'll need to pick a host to deploy it to.
+## Lizenz
 
-### DIY
-
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-- `build/server`
-- `build/client`
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
+Dieses Projekt steht unter der MIT-Lizenz.
