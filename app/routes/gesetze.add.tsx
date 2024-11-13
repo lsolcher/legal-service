@@ -1,7 +1,7 @@
 // /expenses/add
 
 import { redirect } from '@remix-run/node';
-import { addLaw } from '~/data/expenses.server';
+import { addLaw } from '~/data/laws.server';
 
 export default function AddLawPage() {
   return (

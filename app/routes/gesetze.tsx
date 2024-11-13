@@ -1,5 +1,4 @@
 import { Link, Outlet } from '@remix-run/react';
-import { NewLaw } from '~/components/laws/NewLaw';
 
 export default function gesetze() {
   return (
