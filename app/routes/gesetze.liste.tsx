@@ -3,6 +3,7 @@ import { deleteLaw, getLaws } from '~/data/laws.server';
 import { Law } from '@prisma/client';
 import { useState } from 'react';
 import { marked } from 'marked';
+import { ActionFunctionArgs } from '@remix-run/node';
 
 export const loader = async () => {
   const laws: Law[] = await getLaws();
@@ -10,7 +11,7 @@ export const loader = async () => {
 };
 
 // Action function to delete a law
-export const action = async ({ request }) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const lawId = formData.get('lawId');
   if (typeof lawId === 'string') {
