@@ -14,11 +14,24 @@ export async function addLaw(law) {
   }
 }
 
-export const getLaws = async () => {
+export async function deleteLaw(lawId) {
   try {
-    return await prisma.law.findMany()
+    return await prisma.law.delete({
+      where: {
+        id: lawId,
+      },
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     throw error;
   }
 }
+
+export const getLaws = async () => {
+  try {
+    return await prisma.law.findMany();
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};

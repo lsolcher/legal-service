@@ -1,0 +1,6 @@
+- Edit Gesetz
+- Login, Signup, Auth
+- Save analysis
+- scraping
+- use own LLM model
+- styling
