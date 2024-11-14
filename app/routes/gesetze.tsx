@@ -1,8 +1,17 @@
 import { Link, Outlet } from '@remix-run/react';
+import { useEffect, useState } from 'react';
 
 export default function Gesetze() {
+  const [model, setModel] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedModel = window.localStorage.getItem('model');
+    setModel(storedModel || 'kein Modell. Bitte Modell auswählen!');
+  }, []);
+
   return (
     <div className='flex flex-col items-center p-6 space-y-6'>
+      <h1>Aktuell gewähltes Modell: {model}</h1>
       <h1 className='text-3xl font-bold text-gray-800'>Gesetze</h1>
       <ol className='space-y-4'>
         <li>

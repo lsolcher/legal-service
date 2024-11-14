@@ -6,11 +6,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   if (request.method !== 'POST') {
     return json({ error: 'Method not allowed' }, { status: 405 });
   }
-  const { content } = await request.json();
-
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
+  const { content, model } = await request.json();
 
   const principles = [
     'Digitale Kommunikation sicherstellen\n' +
@@ -66,13 +62,22 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     Paragraphen, die verbessert werden können. Wenn der Gesetzestext an sich keinen Sinn ergibt, 
     dann antworte entsprechend ohne Prinzipienauswertung. Antworte in markdown`;
 
-  const response = await openai.chat.completions.create({
-    model: 'gpt-4o-mini',
-    messages: [
-      { role: 'system', content: prompt },
-      { role: 'user', content: `Gesetzestext:\n${content}` },
-    ],
-  });
+  const selectedModel = model || process.env.DEFAULT_MODEL || 'openai';
 
-  return json({ analysis: response.choices[0].message.content });
+  if (selectedModel === 'ollama') {
+    throw new Error('Not implemented');
+  } else {
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: prompt },
+        { role: 'user', content: `Gesetzestext:\n${content}` },
+      ],
+    });
+
+    return json({ analysis: response.choices[0].message.content });
+  }
 };

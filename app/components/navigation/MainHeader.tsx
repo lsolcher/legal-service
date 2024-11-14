@@ -24,6 +24,18 @@ function MainHeader() {
           </li>
           <li>
             <NavLink
+              to='/modelle'
+              className={({ isActive }) =>
+                isActive
+                  ? 'text-yellow-300 font-semibold'
+                  : 'text-white hover:text-yellow-300'
+              }
+            >
+              AI Modelle
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
               to='/gesetze'
               className={({ isActive }) =>
                 isActive

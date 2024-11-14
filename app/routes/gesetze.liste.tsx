@@ -44,7 +44,10 @@ export default function Gesetze() {
       const response = await fetch('/api/analyse-law', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: selectedLaw.content }),
+        body: JSON.stringify({
+          content: selectedLaw.content,
+          model: window.localStorage.getItem('model'),
+        }),
       });
 
       if (!response.ok) {
