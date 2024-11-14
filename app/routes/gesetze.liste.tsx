@@ -60,7 +60,7 @@ export default function Gesetze() {
       setAnalysis(data.analysis); // Zustand aktualisieren, um das Ergebnis anzuzeigen
       console.log('Analysis result:', data.analysis);
     } catch (error) {
-      console.error('Fehler beim Abrufen der Analyse:', error);
+      throw new Error(error);
     }
   };
 

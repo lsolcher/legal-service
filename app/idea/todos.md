@@ -4,3 +4,4 @@
 - scraping
 - use own LLM model
 - styling
+- check error handling

@@ -1,6 +1,7 @@
 // In `app/routes/api/analyse-law.ts`
 import { ActionFunctionArgs, json } from '@remix-run/node';
 import OpenAI from 'openai';
+import ollama from 'ollama';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   if (request.method !== 'POST') {
@@ -64,18 +65,32 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const selectedModel = model || process.env.DEFAULT_MODEL || 'openai';
 
+  const messages: { role: 'system' | 'user'; content: string }[] = [
+    { role: 'system', content: prompt },
+    { role: 'user', content: `Gesetzestext:\n${content}` },
+  ];
   if (selectedModel === 'ollama') {
-    throw new Error('Not implemented');
+    const ollamaApiUrl = process.env.OLLAMA_API_URL;
+    if (!ollamaApiUrl) {
+      return json({ error: 'Ollama API URL is not defined' }, { status: 500 });
+    }
+    try {
+      const response = await ollama.chat({
+        model: 'llama3.2:latest',
+        messages,
+      });
+      return json({ analysis: response.message.content });
+    } catch (error) {
+      console.log(error);
+      return json({ error: error.message }, { status: 500 });
+    }
   } else {
     const openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
     });
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
-      messages: [
-        { role: 'system', content: prompt },
-        { role: 'user', content: `Gesetzestext:\n${content}` },
-      ],
+      messages,
     });
 
     return json({ analysis: response.choices[0].message.content });
