@@ -22,7 +22,10 @@ module.exports = {
   ignorePatterns: ["!**/.server", "!**/.client"],
 
   // Base config
-  extends: ["eslint:recommended"],
+  extends: [
+    "eslint:recommended",
+    "plugin:prettier/recommended", // Add Prettier here
+  ],
 
   overrides: [
     // React

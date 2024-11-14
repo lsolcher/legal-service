@@ -4,11 +4,7 @@ import { redirect } from '@remix-run/node';
 import { addLaw } from '~/data/laws.server';
 
 export default function AddLawPage() {
-  return (
-    <h1>
-      Gesetz erfolgreich zur Datenbankbank hinzugefügt!
-    </h1>
-  );
+  return <h1>Gesetz erfolgreich zur Datenbankbank hinzugefügt!</h1>;
 }
 
 export async function action({ request }) {

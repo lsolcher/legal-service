@@ -5,5 +5,5 @@ export default function GesetzeHinzufuegen() {
     <>
       <NewLaw />
     </>
-  )
+  );
 }
