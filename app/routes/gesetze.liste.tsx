@@ -70,19 +70,19 @@ export default function Gesetze() {
       <div className='flex flex-col'>
         {laws &&
           laws.map((law) => (
-            <button
+            <div
               key={law.id}
-              onClick={() => handleSelect(law.id)}
-              className={`mb-4 p-4 border rounded-md cursor-pointer ${
-                law.id === selectedLawId
-                  ? 'bg-blue-100 border-blue-400'
-                  : 'bg-white'
-              }`}
+              className={`mb-4 p-4 border rounded-md ${law.id === selectedLawId ? 'bg-blue-100 border-blue-400' : 'bg-white'}`}
             >
               <h2 className='font-semibold text-left'>{law.title}</h2>
               <p className='text-left'>{law.content.substring(0, 50)}</p>
               <div className='flex justify-between mt-2'>
-                <button className='text-blue-600'>Edit</button>
+                <button
+                  onClick={() => handleSelect(law.id)}
+                  className='text-blue-600'
+                >
+                  Edit
+                </button>
                 <fetcher.Form
                   method='post'
                   onSubmit={(e) => {
@@ -96,9 +96,10 @@ export default function Gesetze() {
                   </button>
                 </fetcher.Form>
               </div>
-            </button>
+            </div>
           ))}
       </div>
+
       {selectedLaw && (
         <div className='mt-6 p-4 bg-blue-50 border border-blue-300 rounded-md'>
           <h2 className='mb-4'>Ausgewähltes Gesetz: {selectedLaw.title}</h2>
