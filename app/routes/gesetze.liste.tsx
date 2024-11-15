@@ -4,7 +4,7 @@ import { Law } from '@prisma/client';
 import { useState } from 'react';
 import { marked } from 'marked';
 import { ActionFunctionArgs } from '@remix-run/node';
-import { performAnalysis } from '~/services/lawAnalysis';
+import { AnalysisResponse, performAnalysis } from '~/services/lawAnalysis';
 
 export const loader = async () => {
   const laws: Law[] = await getLaws();
@@ -50,7 +50,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function Gesetze() {
   const laws = useLoaderData<Law[]>();
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<AnalysisResponse>();
   const [selectedLawId, setSelectedLawId] = useState<string | null>(null);
 
   const handleSelect = (id: string) => {

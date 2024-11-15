@@ -2,7 +2,7 @@ export async function performAnalysis(
   content: string,
   model: string,
 ): Promise<string> {
-  const baseUrl = process.env.BASE_URL || 'http://localhost:3000'; // Fallback für lokale Entwicklung
+  const baseUrl = process.env.BASE_URL || 'http://localhost:5173';
   const url = `${baseUrl}/api/analyse-law`;
   const response = await fetch(url, {
     method: 'POST',
@@ -21,4 +21,8 @@ export async function performAnalysis(
   }
   const data = await response.json();
   return data.analysis;
+}
+
+export interface AnalysisResponse {
+  analysis: string;
 }
