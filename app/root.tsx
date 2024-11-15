@@ -34,27 +34,39 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export function ErrorBoundary() {
   const error = useRouteError();
 
-  if (isRouteErrorResponse(error)) {
-    return (
-      <div>
-        <h1>
-          {error.status} {error.statusText}
-        </h1>
-        <p>{error.data}</p>
-      </div>
-    );
-  } else if (error instanceof Error) {
-    return (
-      <div>
-        <h1>Error</h1>
-        <p>{error.message}</p>
-        <p>The stack trace is:</p>
-        <pre>{error.stack}</pre>
-      </div>
-    );
-  } else {
-    return <h1>Unknown Error</h1>;
-  }
+  return (
+    <html lang='en'>
+      <head>
+        <title>Error - Gesetzesanalyse</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <MainHeader />
+        <div>
+          {isRouteErrorResponse(error) ? (
+            <>
+              <h1>
+                {error.status} {error.statusText}
+              </h1>
+              <p>{error.data}</p>
+            </>
+          ) : error instanceof Error ? (
+            <>
+              <h1>Error</h1>
+              <p>{error.message}</p>
+              <p>The stack trace is:</p>
+              <pre>{error.stack}</pre>
+            </>
+          ) : (
+            <h1>Unknown Error</h1>
+          )}
+        </div>
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
+  );
 }
 
 export default function App() {
