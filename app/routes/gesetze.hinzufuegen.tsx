@@ -1,9 +1,9 @@
-import { NewLaw } from '~/components/laws/NewLaw';
+import { LawForm } from '~/components/laws/LawForm';
 
 export default function GesetzeHinzufuegen() {
   return (
     <>
-      <NewLaw />
+      <LawForm />
     </>
   );
 }

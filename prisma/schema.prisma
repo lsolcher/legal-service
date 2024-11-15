@@ -11,8 +11,8 @@ datasource db {
 }
 
 model Law {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  title String
-  content String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String   @unique
+  content   String
   dateAdded DateTime @default(now())
 }

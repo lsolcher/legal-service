@@ -1,4 +1,4 @@
-import { json, useFetcher, useLoaderData } from '@remix-run/react';
+import { json, Link, useFetcher, useLoaderData } from '@remix-run/react';
 import { deleteLaw, getLaws } from '~/data/laws.server';
 import { Law } from '@prisma/client';
 import { useState } from 'react';
@@ -83,19 +83,17 @@ export default function Gesetze() {
       <div className='flex flex-col'>
         {laws &&
           laws.map((law) => (
-            <div
+            <button
+              onClick={() => handleSelect(law.id)}
               key={law.id}
               className={`mb-4 p-4 border rounded-md ${law.id === selectedLawId ? 'bg-blue-100 border-blue-400' : 'bg-white'}`}
             >
               <h2 className='font-semibold text-left'>{law.title}</h2>
               <p className='text-left'>{law.content.substring(0, 50)}</p>
               <div className='flex justify-between mt-2'>
-                <button
-                  onClick={() => handleSelect(law.id)}
-                  className='text-blue-600'
-                >
-                  Edit
-                </button>
+                <Link to={`../${law.id}`} className='text-blue-600'>
+                  Editieren
+                </Link>
                 <fetcher.Form
                   method='post'
                   onSubmit={(e) => {
@@ -105,11 +103,11 @@ export default function Gesetze() {
                 >
                   <input type='hidden' name='lawId' value={law.id} />
                   <button type='submit' className='text-red-600'>
-                    Delete
+                    Löschen
                   </button>
                 </fetcher.Form>
               </div>
-            </div>
+            </button>
           ))}
       </div>
 
