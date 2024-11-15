@@ -1,26 +1,27 @@
-import { Outlet } from '@remix-run/react';
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Modelle() {
-  const [model, setModel] = React.useState<string | null>(null);
+  const [model, setModel] = useState<string | null>(() => {
+    // Initialize state from localStorage
+    return window.localStorage.getItem('model');
+  });
 
   useEffect(() => {
     if (model !== null) {
       window.localStorage.setItem('model', model);
-      window.alert(`Das Modell wurde auf ${model} gesetzt!`);
     }
   }, [model]);
 
   return (
-    <div className='flex flex-col items-center p-6 space-y-6'>
-      <h1 className='text-3xl font-bold text-gray-800'>
+    <>
+      <h1 className='text-center py-4'>
         Wählen Sie ein KI-Modell zur Analyse aus
       </h1>
-      <ol className='space-y-4'>
+      <ol className='flex justify-center space-x-6'>
         <li>
           <button
             onClick={() => setModel('ollama')}
-            className='text-lg text-blue-600 hover:text-blue-800 hover:underline'
+            className='px-6 py-3 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 active:bg-blue-700 transition duration-200 shadow-md hover:shadow-lg'
           >
             Ollama
           </button>
@@ -28,15 +29,15 @@ export default function Modelle() {
         <li>
           <button
             onClick={() => setModel('openai')}
-            className='text-lg text-blue-600 hover:text-blue-800 hover:underline'
+            className='px-6 py-3 rounded-lg bg-green-500 text-white font-semibold hover:bg-green-600 active:bg-green-700 transition duration-200 shadow-md hover:shadow-lg'
           >
-            Open Ai ChatGPT
+            OpenAI ChatGPT
           </button>
         </li>
       </ol>
-      <div className='w-full max-w-4xl'>
-        <Outlet />
-      </div>
-    </div>
+      <h2 className='text-center pt-8'>
+        Aktuell gewähltes Modell: <b>{model || 'Keines'}</b>
+      </h2>
+    </>
   );
 }
