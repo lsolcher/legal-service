@@ -1,7 +1,7 @@
-- Edit Gesetz
+- Edit Gesetz ✅
 - Login, Signup, Auth
 - Save analysis
 - scraping
 - use own LLM model
-- styling
-- check error handling
+- styling 
+- check error handling ✅

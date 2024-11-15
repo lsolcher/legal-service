@@ -1,8 +1,9 @@
 import { json, useFetcher } from '@remix-run/react';
 import { marked } from 'marked';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ActionFunctionArgs } from '@remix-run/node';
 import { AnalysisResponse, performAnalysis } from '~/services/lawAnalysis';
+import DOMPurify from 'dompurify';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
@@ -30,6 +31,23 @@ export default function GesetzeSchnellanalyse() {
   const [model] = useState(
     window ? window.localStorage.getItem('model') || '' : '',
   );
+  const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
+
+  useEffect(() => {
+    const sanitizeHtml = async () => {
+      if (fetcher.data?.analysis && typeof fetcher.data.analysis === 'string') {
+        try {
+          const parsedHtml = await marked.parse(fetcher.data.analysis);
+          const cleanHtml = DOMPurify.sanitize(parsedHtml);
+          setSanitizedHtml(cleanHtml);
+        } catch (error) {
+          console.error('Failed to sanitize analysis content:', error);
+        }
+      }
+    };
+
+    sanitizeHtml();
+  }, [fetcher.data?.analysis]);
 
   return (
     <>
@@ -50,14 +68,10 @@ export default function GesetzeSchnellanalyse() {
         </div>
       </fetcher.Form>
 
-      {fetcher.data?.analysis && (
+      {sanitizedHtml && (
         <div className='mt-6 p-4 bg-green-50 border border-green-300 rounded-md'>
           <h1>Analyse-Ergebnis:</h1>
-          <p
-            dangerouslySetInnerHTML={{
-              __html: marked.parse(fetcher.data.analysis),
-            }}
-          />
+          <p dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
         </div>
       )}
     </>

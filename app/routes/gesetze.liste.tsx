@@ -1,10 +1,11 @@
 import { json, Link, useFetcher, useLoaderData } from '@remix-run/react';
 import { deleteLaw, getLaws } from '~/data/laws.server';
 import { Law } from '@prisma/client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { marked } from 'marked';
 import { ActionFunctionArgs } from '@remix-run/node';
 import { AnalysisResponse, performAnalysis } from '~/services/lawAnalysis';
+import DOMPurify from 'dompurify';
 
 export const loader = async () => {
   const laws: Law[] = await getLaws();
@@ -52,6 +53,7 @@ export default function Gesetze() {
   const laws = useLoaderData<Law[]>();
   const fetcher = useFetcher<AnalysisResponse>();
   const [selectedLawId, setSelectedLawId] = useState<string | null>(null);
+  const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
 
   const handleSelect = (id: string) => {
     setSelectedLawId(id);
@@ -62,6 +64,7 @@ export default function Gesetze() {
       fetcher.submit({ type: 'delete', lawId }, { method: 'post' });
     }
   };
+
   const selectedLaw = laws.find((law) => law.id === selectedLawId);
 
   const analyseLaw = () => {
@@ -77,6 +80,22 @@ export default function Gesetze() {
     );
   };
 
+  useEffect(() => {
+    const sanitizeHtml = async () => {
+      if (fetcher.data?.analysis && typeof fetcher.data.analysis === 'string') {
+        try {
+          const parsedHtml = await marked.parse(fetcher.data.analysis);
+          const cleanHtml = DOMPurify.sanitize(parsedHtml);
+          setSanitizedHtml(cleanHtml);
+        } catch (error) {
+          console.error('Failed to sanitize analysis content:', error);
+        }
+      }
+    };
+
+    sanitizeHtml();
+  }, [fetcher.data?.analysis]);
+
   return (
     <>
       <h1>Eine Liste der gespeicherten Gesetze</h1>
@@ -86,7 +105,11 @@ export default function Gesetze() {
             <button
               onClick={() => handleSelect(law.id)}
               key={law.id}
-              className={`mb-4 p-4 border rounded-md ${law.id === selectedLawId ? 'bg-blue-100 border-blue-400' : 'bg-white'}`}
+              className={`mb-4 p-4 border rounded-md ${
+                law.id === selectedLawId
+                  ? 'bg-blue-100 border-blue-400'
+                  : 'bg-white'
+              }`}
             >
               <h2 className='font-semibold text-left'>{law.title}</h2>
               <p className='text-left'>{law.content.substring(0, 50)}</p>
@@ -122,14 +145,10 @@ export default function Gesetze() {
           </button>
         </div>
       )}
-      {fetcher.data?.analysis && (
+      {sanitizedHtml && (
         <div className='mt-6 p-4 bg-green-50 border border-green-300 rounded-md'>
           <h1>Analyse-Ergebnis:</h1>
-          <p
-            dangerouslySetInnerHTML={{
-              __html: marked.parse(fetcher.data.analysis),
-            }}
-          />
+          <p dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
         </div>
       )}
     </>
