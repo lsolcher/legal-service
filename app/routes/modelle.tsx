@@ -13,7 +13,9 @@ export default function Modelle() {
 
   return (
     <div className='flex flex-col items-center p-6 space-y-6'>
-      <h1 className='text-3xl font-bold text-gray-800'>Gesetze</h1>
+      <h1 className='text-3xl font-bold text-gray-800'>
+        Wählen Sie ein KI-Modell zur Analyse aus
+      </h1>
       <ol className='space-y-4'>
         <li>
           <button
