@@ -1,12 +1,13 @@
 import { Form } from '@remix-run/react';
 import { Law } from '@prisma/client';
+import { HTMLFormMethod } from '@remix-run/router';
 
 export function LawForm({
   method = 'post',
   action = '/gesetze/add',
-  law = {},
+  law,
 }: {
-  method?: string;
+  method?: HTMLFormMethod;
   action?: string;
   law?: Law;
 }) {
@@ -18,7 +19,7 @@ export function LawForm({
       className='bg-gray-100 p-6 rounded-lg shadow-md max-w-md mx-auto'
     >
       {/* Hidden input for ID */}
-      {law.id && <input type='hidden' name='id' value={law.id} />}
+      {law?.id && <input type='hidden' name='id' value={law.id} />}
       <p className='mb-4'>
         <label htmlFor='title' className='block text-gray-700 font-medium mb-1'>
           Title
@@ -28,7 +29,7 @@ export function LawForm({
           id='title'
           name='title'
           required
-          defaultValue={law.title || ''}
+          defaultValue={law?.title || ''}
           className='w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
         />
       </p>
@@ -43,7 +44,7 @@ export function LawForm({
           id='content'
           name='content'
           required
-          defaultValue={law.content || ''}
+          defaultValue={law?.content || ''}
           className='w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
         />
       </p>
